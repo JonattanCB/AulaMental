@@ -1,0 +1,9 @@
+,--.  ,--.                  ,------. ,----.
+|  '--'  | ,--,--.,--.  ,--.|  .-.  \'.-.  |
+|  .--.  |' ,-.  | \  `'  / |  |  \  : .' <
+|  |  |  |\ '-'  | /  /.  \ |  '--'  /'-'  |
+`--'  `--' `--`--''--'  '--'`-------'`----'
+
+${application.title} ${application.version}
+Powered by Spring Boot ${spring-boot.version}
+:: Aulamental API ::  powered by Spring Boot 3.5 🚀

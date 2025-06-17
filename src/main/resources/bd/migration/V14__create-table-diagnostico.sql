@@ -1,0 +1,6 @@
+CREATE TABLE diagnostico (
+    id int  AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(250) NOT NULL,
+    descripcion VARCHAR(500) NOT NULL,
+    estado ENUM('ACTIVO', 'INACTIVO') NOT NULL DEFAULT 'ACTIVO'
+);
