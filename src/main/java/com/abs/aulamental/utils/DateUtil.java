@@ -16,7 +16,6 @@ public class DateUtil {
     public static DayOfWeek getTodayDayOfWeek() {
         return LocalDate.now().getDayOfWeek();
     }
-
     public static Date getTodaySqlDate() {
         return Date.valueOf(LocalDate.now());
     }

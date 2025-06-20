@@ -16,11 +16,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Usuario searchUsuarioById(int id);
 
-    boolean existsUsuarioById(int id);
-
     boolean existsByCorreo(String correo);
-
-    boolean existsUsuarioByCorreo(String correo);
 
     @Query("""
         SELECT ur.usuario FROM UsuarioRol ur WHERE 

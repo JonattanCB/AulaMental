@@ -1,7 +1,6 @@
 package com.abs.aulamental.controller.user;
 
 import com.abs.aulamental.dto.user.*;
-import com.abs.aulamental.model.Usuario;
 import com.abs.aulamental.service.user.UsuarioService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

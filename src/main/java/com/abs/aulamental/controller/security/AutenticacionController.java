@@ -23,7 +23,7 @@ public class AutenticacionController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     @Transactional
     public ResponseEntity<TokenDto> autenticar(@RequestBody UsuarioLoginDto dto) {
         var authentication = authenticationManager.authenticate(

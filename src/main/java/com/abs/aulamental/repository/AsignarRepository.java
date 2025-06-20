@@ -15,20 +15,6 @@ import java.sql.Date;
 public interface AsignarRepository extends JpaRepository<Asignar, Integer> {
 
     @Query("""
-            SELECT a FROM  asignar a 
-            WHERE (:fecha IS NULL OR a.FechaCreacion = :fecha)
-            AND  a.Usuario.id != a.Practicante.id 
-            """)
-    Page<Asignar> findByOpcionalFechaaulamental(Date fecha, Pageable pageable);
-
-    @Query("""
-            SELECT a FROM  asignar a 
-            WHERE (:fecha IS NULL OR a.FechaCreacion = :fecha)
-            AND  a.Practicante.id = :idPracticante
-            """)
-    Page<Asignar> findByOpcionalFechaPracticante(Date fecha, Pageable pageable, int idPracticante);
-
-    @Query("""
            SELECT a FROM asignar  a WHERE a.estado != 'CERRADO' AND
            (:nombre IS NULL OR LOWER(CONCAT(a.Practicante.persona.nombre, ' ', a.Practicante.persona.apaterno, ' ', a.Practicante.persona.amaterno)) LIKE LOWER(CONCAT('%', :nombre, '%')))
            """)

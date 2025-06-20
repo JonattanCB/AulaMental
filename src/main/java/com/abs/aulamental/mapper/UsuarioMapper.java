@@ -1,6 +1,7 @@
 package com.abs.aulamental.mapper;
 
 import com.abs.aulamental.dto.horario.HorarioDto;
+import com.abs.aulamental.dto.rol.RolDto;
 import com.abs.aulamental.dto.user.*;
 import com.abs.aulamental.model.Persona;
 import com.abs.aulamental.model.Usuario;
@@ -29,13 +30,13 @@ public class UsuarioMapper {
 
     public static UsuarioDto toDto(Usuario entity){
         List<HorarioDto> horariosDtos = entity.getHorarios().stream().map(horario -> new HorarioDto(horario.getDia(), horario.getHora())).toList();
-        List<Integer>  rolactivos = entity.getUsuarioRoles().stream().filter(usuarioRol -> usuarioRol.getEstado() == Estado.ACTIVO)
-                .map(usuarioRol -> usuarioRol.getRol().getId()).toList();
+        List<RolDto>  rolDtos = entity.getUsuarioRoles().stream().filter(usuarioRol -> usuarioRol.getEstado() == Estado.ACTIVO)
+                .map(usuarioRol -> RolMapper.toDto(usuarioRol.getRol())).toList();
 
         return  new UsuarioDto(entity.getId(), entity.getPersona().getNombre(), entity.getPersona().getApaterno(),
                 entity.getPersona().getAmaterno(), entity.getPersona().getTdocumento(), entity.getPersona().getNdocumento(),
                 entity.getPersona().getTelefono1(), entity.getPersona().getTelefono2(), entity.getPersona().getCorreoPersonal(),
-                entity.getPersona().getDireccion(), rolactivos,horariosDtos);
+                entity.getPersona().getDireccion(), rolDtos,horariosDtos);
     }
 
     public static UsuarioEstadoUpdateDto toUpdateEstadoDto(Usuario entity){

@@ -18,25 +18,4 @@ public interface UsuarioRolRepository extends JpaRepository<UsuarioRol, Long> {
     @Query("SELECT ur FROM UsuarioRol ur WHERE ur.usuario.id = :idUsuario AND ur.rol.id = :idRol")
     UsuarioRol findByUsuarioIdAndRolId(int idUsuario, int idRol);
 
-
-
-    @Query("""
-        SELECT ur.usuario 
-        FROM UsuarioRol ur 
-        WHERE ur.rol.id = :idRol 
-        AND LOWER(CONCAT(ur.usuario.persona.nombre, ' ', ur.usuario.persona.apaterno,' ', ur.usuario.persona.amaterno)) LIKE LOWER(CONCAT('%', :nombre, '%'))
-    """)
-    Page<Usuario> buscarUsuariosPorRolYNombre(
-            @Param("idRol") int idRol,
-            @Param("nombre") String nombre,
-            Pageable pageable
-    );
-
-
-    @Query("SELECT u.usuario FROM UsuarioRol u WHERE u.rol.id = :id AND " +
-            "(:nombre IS NULL OR LOWER(CONCAT(u.usuario.persona.nombre, ' ', u.usuario.persona.apaterno, ' ', u.usuario.persona.amaterno)) " +
-            "LIKE LOWER(CONCAT('%', :nombre, '%')))")
-    Page<Usuario> listarUsuarioAsistenciaOptionombrePracticante(@Param("nombre") String nombre,
-                                                                @Param("id") int id,
-                                                                Pageable pageable);
 }

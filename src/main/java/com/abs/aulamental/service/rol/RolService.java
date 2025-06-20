@@ -5,11 +5,13 @@ import com.abs.aulamental.mapper.RolMapper;
 import com.abs.aulamental.model.Rol;
 import com.abs.aulamental.model.UsuarioRol;
 import com.abs.aulamental.model.enums.Estado;
+import com.abs.aulamental.model.enums.Roles;
 import com.abs.aulamental.repository.RolRepository;
 import com.abs.aulamental.repository.UsuarioRolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,8 +20,13 @@ public class RolService {
     private final RolRepository rolRepository;
     private final UsuarioRolRepository usuarioRolRepository;
 
-    public List<RolDto> findAll() {
-        List<Rol> rols = rolRepository.findAll();
+    public List<RolDto> findAll(int id) {
+        List<Rol> rols;
+        if (hasRole(id, Roles.Psicologia.name())){
+            rols = rolRepository.listRolbyRols(Roles.Practicante.name());
+        }else{
+            rols = rolRepository.findAll();
+        }
         return rols.stream().map(RolMapper::toDto).toList();
     }
 

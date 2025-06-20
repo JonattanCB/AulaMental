@@ -1,6 +1,7 @@
 package com.abs.aulamental.dto.user;
 
 import com.abs.aulamental.dto.horario.HorarioDto;
+import com.abs.aulamental.dto.rol.RolDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,8 +30,8 @@ public record UsuarioDto(
         @NotBlank(message = "Necesita ingresar todos los datos") @Email(message = "No esta en formato email") String correopersonal,
 
         @NotBlank(message = "Necesita ingresar todos los datos") String direccion,
-
-        @NotNull(message = "Se necesita datos") List<Integer> rolesId,
+        
+        @NotNull(message = "Se necesita datos") List<RolDto> rolDtos,
 
         @NotNull(message = "Necesitas ingresar todos los datos") List<HorarioDto> horarios
 ) {
