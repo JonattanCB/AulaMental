@@ -23,6 +23,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SecurityConfiguration {
 
+
     private  final SecurityFilter securityFilter;
 
     @Autowired
