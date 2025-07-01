@@ -52,14 +52,19 @@ public class SecurityConfiguration {
                         // Endpoints Sucesos
                         .requestMatchers("/api/suceso/**").hasAnyAuthority("ROLE_Psicologia", "ROLE_Bienestar")
                         // Endpoints Diagnostico
-                        .requestMatchers("/api/diagnostico/**").hasAnyAuthority("ROLE_Psicologia")
+                        .requestMatchers("/api/diagnostico/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Practicante")
                         // Endpoints AtencionAlumno
                         .requestMatchers("/api/atencionalumno/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Practicante")
                         // Endpoints AtencionApoderado
                         .requestMatchers("/api/atencionapoderado/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Practicante")
                         // Endpoints Asignar
                         .requestMatchers("/api/asignar/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Practicante")
-
+                        // Endpoints Persona
+                        .requestMatchers("/api/persona/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Directora")
+                        // Endpoints Alumno
+                        .requestMatchers("/api/alumno/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Directora")
+                        // Endpoints CITA
+                        .requestMatchers("/api/cita/**").permitAll()
 
                         .anyRequest().authenticated()
                 )

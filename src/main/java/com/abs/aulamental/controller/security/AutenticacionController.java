@@ -3,6 +3,7 @@ package com.abs.aulamental.controller.security;
 import com.abs.aulamental.dto.security.UsuarioLoginDto;
 import com.abs.aulamental.dto.security.TokenDto;
 import com.abs.aulamental.exception.ValidarExcepciones;
+import com.abs.aulamental.mapper.PersonaMapper;
 import com.abs.aulamental.model.Usuario;
 import com.abs.aulamental.service.security.TokenService;
 import jakarta.transaction.Transactional;
@@ -36,6 +37,6 @@ public class AutenticacionController {
         if (token == null) {
             throw new ValidarExcepciones("Error al generar el token");
         }
-        return ResponseEntity.ok(new TokenDto(((Usuario) authentication.getPrincipal()).getId(),token));
+        return ResponseEntity.ok(new TokenDto(((Usuario) authentication.getPrincipal()).getId(), PersonaMapper.toConcatNombre(((Usuario) authentication.getPrincipal()).getPersona()),token));
     }
 }

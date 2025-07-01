@@ -1,10 +1,12 @@
 package com.abs.aulamental.service.user;
 
 import com.abs.aulamental.dto.horario.HorarioDto;
+import com.abs.aulamental.dto.permisos.PermisoMenuDto;
 import com.abs.aulamental.dto.user.*;
 import com.abs.aulamental.exception.ValidarExcepciones;
 import com.abs.aulamental.mapper.HorarioMapper;
 import com.abs.aulamental.mapper.UsuarioMapper;
+import com.abs.aulamental.model.Permiso;
 import com.abs.aulamental.model.Rol;
 import com.abs.aulamental.model.Usuario;
 import com.abs.aulamental.model.UsuarioRol;
@@ -14,16 +16,15 @@ import com.abs.aulamental.repository.*;
 import com.abs.aulamental.service.horario.HorarioService;
 import com.abs.aulamental.service.rol.RolService;
 import com.abs.aulamental.utils.DateUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PersonasRepository personasRepository;
     private final RolRepository rolRepository;
+    private final PermisoRepository permisoRepository;
     private final UsuarioRolRepository usuarioRolRepository;
     private final HorarioRepository horarioRepository;
     private final RolService rolService;
@@ -54,6 +56,7 @@ public class UsuarioService {
         return UsuarioMapper.toDto(usuarioRepository.searchUsuarioById(id));
     }
 
+    @Transactional
     public UsuarioDetailDto createUser( UsuarioCreateDto dto) {
 
         validarCondicionalescreate(dto);
@@ -77,6 +80,7 @@ public class UsuarioService {
         return UsuarioMapper.toDetailDto(usuario,rspRoles,rspHorario);
     }
 
+    @Transactional
     public UsuarioDetailDto updateUser(UsuarioUpdateDto dto) {
         validarCondicionalesupdate();
 
@@ -97,6 +101,7 @@ public class UsuarioService {
         return UsuarioMapper.toDetailDto(usuario,rspRoles,rspHorario);
     }
 
+    @Transactional
     public UsuarioEstadoUpdateDto changerEstado(int id){
         var usuario = usuarioRepository.searchUsuarioById(id);
         if (usuario.getEstado().equals(Estado.ACTIVO)){
@@ -244,6 +249,74 @@ public class UsuarioService {
         }
 
         return horariosNuevos;
+    }
+
+    @Transactional
+    public String updatePassword(int id, @Valid UsuarioContraseñaDto dto) {
+        Usuario usuario = usuarioRepository.searchUsuarioById(id);
+
+        if (!passwordEncoder.matches(dto.contraseñaActual(), usuario.getContrasena())) {
+            throw new ValidarExcepciones("La contraseña actual es incorrecta");
+        }
+
+        if (!dto.nuevaContraseña().equals(dto.confirmarContraseña())) {
+            throw new ValidarExcepciones("La nueva contraseña y la confirmación no coinciden");
+        }
+        usuario.actualizarContrasena(passwordEncoder.encode(dto.nuevaContraseña()));
+        return "Contraseña actualizada correctamente";
+    }
+
+    @Transactional(readOnly = true)
+    public List<Permiso> listarPermisosPorUsuario(int idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        Set<Integer> idsRoles = usuario.getUsuarioRoles().stream()
+                .filter(ur -> ur.getEstado() == Estado.ACTIVO)
+                .map(ur -> ur.getRol().getId())
+                .collect(Collectors.toSet());
+
+        if (idsRoles.isEmpty()) {
+            return List.of();
+        }
+
+        return permisoRepository.findByRoles(idsRoles.stream().toList());
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<PermisoMenuDto> construirMenuParaUsuario(int idUsuario) {
+        List<Permiso> permisos = listarPermisosPorUsuario(idUsuario);
+
+        if (permisos.isEmpty()) {
+            return List.of();
+        }
+
+
+        Map<Integer, List<Permiso>> agrupadosPorPadre = permisos.stream()
+                .collect(Collectors.groupingBy(Permiso::getParentId));
+
+        List<Permiso> padres = agrupadosPorPadre.getOrDefault(0, List.of());
+
+        return padres.stream()
+                .map(padre -> toDtoConHijos(padre, agrupadosPorPadre))
+                .collect(Collectors.toList());
+    }
+
+    private PermisoMenuDto toDtoConHijos(Permiso permiso, Map<Integer, List<Permiso>> agrupadosPorPadre) {
+        List<Permiso> hijos = agrupadosPorPadre.getOrDefault(permiso.getId(), List.of());
+
+        List<PermisoMenuDto> items = hijos.stream()
+                .map(hijo -> toDtoConHijos(hijo, agrupadosPorPadre))
+                .collect(Collectors.toList());
+
+        return new PermisoMenuDto(
+                permiso.getId(),
+                permiso.getLabel(),
+                permiso.getIcon(),
+                permiso.getUrl(),
+                items.isEmpty() ? null : items
+        );
     }
 
 }

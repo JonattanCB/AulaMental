@@ -23,7 +23,7 @@ public class SucesoMapper {
     }
 
     public static ItemSucesoDto toItemSucesoDto(itemSucesos entity){
-        return new ItemSucesoDto(entity.getId(), entity.getSucesos().getNombre(),entity.getSucesos().getFecha(), entity.getNivelGravedad());
+        return new ItemSucesoDto(entity.getSucesos().getId(), entity.getSucesos().getNombre(),entity.getSucesos().getFecha(), entity.getNivelGravedad());
     }
 
     public static SucesoDetailDto toDetailSuceso(Sucesos sucesos, List<SucesoAlumnoDto> sucesoAlumnos, NivelGravedad nivelGravedad){

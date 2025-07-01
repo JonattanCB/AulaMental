@@ -1,23 +1,24 @@
 package com.abs.aulamental.controller.asignacion;
 
-import com.abs.aulamental.dto.asignar.AsignarCreateUserDto;
-import com.abs.aulamental.dto.asignar.AsignarDetailsDto;
-import com.abs.aulamental.dto.asignar.AsignarListPracticantesDto;
-import com.abs.aulamental.dto.asignar.AsignarTaskListDto;
+import com.abs.aulamental.dto.asignar.*;
 import com.abs.aulamental.dto.atencionalumno.AtenAlumnoDetailDto;
 import com.abs.aulamental.dto.atencionalumno.AtenAlumnoUpdateDto;
 import com.abs.aulamental.dto.atencionapoderado.AtenApoderadoDetailDto;
 import com.abs.aulamental.dto.atencionapoderado.AtenApoderadoUpdateDto;
+import com.abs.aulamental.dto.user.PracticanteListDetailsDto;
 import com.abs.aulamental.service.asignar.AsignarService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/asignar")
@@ -35,10 +36,24 @@ public class AsignarController {
         return ResponseEntity.ok(asignarService.listAsignar(nombre,pageable));
     }
 
+    @GetMapping("/list/practicate")
+    public  ResponseEntity<List<PracticanteListDetailsDto>> listPracticates(@RequestParam(required = false) String nombre){
+        return  ResponseEntity.ok(asignarService.listPracticanteDetails(nombre));
+    }
+
     @GetMapping("/practicante/list/{id}")
-    public ResponseEntity<Page<AsignarTaskListDto>> listAsignacionPracticantes(@PathVariable int id, @RequestParam(required = false)Date fecha, @PageableDefault(size = 10) Pageable pageable){
+    public ResponseEntity<Page<AsignarTaskListDto>> listAsignacionPracticantes(@PathVariable int id,
+                                                                               @RequestParam(required = false)
+                                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate fecha,
+                                                                               @PageableDefault(size = 10) Pageable pageable){
         return ResponseEntity.ok(asignarService.listAsignacionPracticantes(id,fecha,pageable));
     }
+
+    @GetMapping("/practicante/practicante/details/{id}")
+    public ResponseEntity<AsignarPracticanteDetailsDto> getPracticanteDetails(@PathVariable int id ){
+        return ResponseEntity.ok(asignarService.getPracticanteDetails(id));
+    }
+
 
     @PutMapping("/practicante/atencionAlumno")
     @Transactional

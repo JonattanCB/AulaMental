@@ -11,6 +11,8 @@ public record AtenApoderadoListDto(
         @NotBlank(message = "falta el dato de tdocumento") String tdocumento,
         @NotBlank(message = "falta el dato de ndocumento") String ndocumento,
         @NotBlank(message = "falta el dato de telefono")   String telefono,
-        String telefono2
+        String telefono2,
+        long cantAtencion,
+        String ultFecha
 ) {
 }

@@ -18,4 +18,5 @@ public interface RolRepository extends JpaRepository<Rol, Integer> {
     List<Rol> listRolbyRols(String nombre);
 
     Rol getRolByNombre(String nombre);
+
 }

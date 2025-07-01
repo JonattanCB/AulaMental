@@ -7,6 +7,7 @@ import com.abs.aulamental.model.Asistencia;
 import com.abs.aulamental.model.Usuario;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class AsistenciaMapper {
 
@@ -14,8 +15,8 @@ public class AsistenciaMapper {
         return new AsistenciaDetailDto(asistencia.getFecha(), asistencia.getHora(), asistencia.getEstado());
     }
 
-    public static AsistenciaUsuarioListDto tolistUserDto(Usuario usuario){
-        return new AsistenciaUsuarioListDto(usuario.getId(), PersonaMapper.toConcatNombre(usuario.getPersona()), usuario.getPersona().getTelefono1(), usuario.getEstado());
+    public static AsistenciaUsuarioListDto tolistUserDto(Usuario usuario, String ultimafecha){
+        return new AsistenciaUsuarioListDto(usuario.getId(), PersonaMapper.toConcatNombre(usuario.getPersona()), usuario.getPersona().getTelefono1(), ultimafecha, usuario.getEstado());
     }
 
     public static AsistenciaDto toDto(Asistencia asistencia){

@@ -5,11 +5,14 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.sql.Date;
+
 @Valid
 public record AsistenciaUsuarioListDto(
         @NotNull int id,
         @NotBlank String nombre,
-        @NotBlank  String telefono,
+        @NotBlank String telefono,
+        @NotBlank String ultimaAsistencia,
         @NotNull Estado estado
 ) {
 }

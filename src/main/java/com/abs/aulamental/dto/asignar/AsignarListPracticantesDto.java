@@ -15,6 +15,7 @@ public record AsignarListPracticantesDto(
       @NotBlank String nombre,
       @NotNull  Tipodocumentacion tipodocumentacion,
       @NotNull EstadoDocumento estadoDocumento,
-      @NonNull Date fecha
+      @NonNull Date fecha,
+      @NotNull int idDocumento
 ) {
 }

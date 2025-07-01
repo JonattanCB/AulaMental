@@ -11,7 +11,6 @@ import com.abs.aulamental.repository.UsuarioRolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

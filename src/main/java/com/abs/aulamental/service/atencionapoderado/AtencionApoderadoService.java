@@ -1,5 +1,6 @@
 package com.abs.aulamental.service.atencionapoderado;
 
+import com.abs.aulamental.dto.Apoderado.ApoderadoDetailsSelectDto;
 import com.abs.aulamental.dto.asignar.AsignarCreateDto;
 import com.abs.aulamental.dto.atencionapoderado.*;
 import com.abs.aulamental.exception.ValidarExcepciones;
@@ -17,8 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,7 @@ public class AtencionApoderadoService {
     private final UsuarioRepository usuarioRepository;
     private final AsignarRepository asignarRepository;
 
+    @Transactional
     public AtenApoderadoDetailDto createAtenApoderadoPsicologia(AtenApoderadoCreateDto dto) {
         var apoderado = apoderadoRepository.searchApoderadoById(dto.idApoderado());
         var psicologo =  usuarioRepository.searchUsuarioById(dto.idpsicologo());
@@ -43,17 +48,29 @@ public class AtencionApoderadoService {
     }
 
     public Page<AtenApoderadoListDto> listAtenApoderado(String nombre, Pageable pageable) {
-        return apoderadoRepository.findbyApoderadosOpcionalnombre(nombre, pageable).map(AtencionApoderadoMapper::toListAtenApoderado);
+        return apoderadoRepository.findbyApoderadosOpcionalnombre(nombre, pageable).map(apoderado -> {
+            long cant = getCantidadAtenciones(apoderado.getId());
+            String fecha = getUltimaFechaAtencion(apoderado.getId());
+            return AtencionApoderadoMapper.toListAtenApoderado(apoderado,cant,fecha);
+        });
     }
 
-    public Page<AtenApoderadoListDetailDto> listAtenAPoderadoDetails(int id, Date fecha, Pageable pageable) {
+    public Page<AtenApoderadoListDetailDto> listAtenAPoderadoDetails(int id, LocalDate fecha, Pageable pageable) {
         return atencionApoderadosRepository.listAtencionApoderadoOptionalDate(id, fecha, pageable).map(AtencionApoderadoMapper::toListAtenApoderadoDetail);
     }
 
+    @Transactional
     public AtenApoderadoDto getAtencionApoderado(int id) {
         return AtencionApoderadoMapper.toDto(atencionApoderadosRepository.getAtencionApoderadosById(id));
     }
 
+    public List<ApoderadoDetailsSelectDto> getApoderadoSelect(String nombre){
+        return apoderadoRepository.listarApoderadoOptionNombre(nombre).stream().map(apoderado -> {
+            long cantidad = getCantidadAtenciones(apoderado.getId());
+            String fecha = getUltimaFechaAtencion(apoderado.getId());
+            return AtencionApoderadoMapper.toListSelectApoderad(apoderado,cantidad,fecha);
+        }).toList();
+    }
 
     private void validacionComprobarcreate(Apoderado apoderado, Usuario usuario){
         if (apoderado==null){
@@ -63,6 +80,15 @@ public class AtencionApoderadoService {
         if (usuario==null){
             throw new ValidarExcepciones("Apoderado no valido");
         }
+    }
+
+    public long getCantidadAtenciones(int idApoderado) {
+        return atencionApoderadosRepository.contarAtencionesPorApoderadoCerradas(idApoderado);
+    }
+
+    public String getUltimaFechaAtencion(int idApoderado) {
+        Date ultimaFecha = atencionApoderadosRepository.obtenerUltimaFechaPorApoderadoCerrada(idApoderado);
+        return (ultimaFecha != null) ? ultimaFecha.toString() : "Sin registros";
     }
 
 

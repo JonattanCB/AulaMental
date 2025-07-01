@@ -24,8 +24,14 @@ public class Permiso {
 
     private String icon;
 
-    private int idparent;
+    @Column(name = "parent_id", nullable = false)
+    private int parentId;
 
+    @Enumerated(EnumType.STRING)
     private Estado estado;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rol")
+    private Rol rol;
 
 }

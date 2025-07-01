@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
 
@@ -19,5 +21,16 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
            """)
     Page<Alumno> getAlumnosOptionNombre(String nombre, Pageable pageable);
 
+    @Query("""
+           SELECT a FROM alumno a WHERE
+           (:nombre IS NULL OR LOWER(CONCAT(a.persona.nombre, ' ', a.persona.apaterno, ' ', a.persona.amaterno)) LIKE CONCAT('%', LOWER(:nombre), '%'))
+           """)
+    List<Alumno> getAlumnosOptionNombretoList(String nombre);
+
+    @Query("""
+           SELECT a FROM alumno a WHERE
+           (:nombre IS NULL OR LOWER(CONCAT(a.persona.nombre, ' ', a.persona.apaterno, ' ', a.persona.amaterno)) LIKE CONCAT('%', LOWER(:nombre), '%'))
+           """)
+    Page<Alumno> getAlumnosOptionNombretoPage(String nombre, Pageable pageable);
 
 }

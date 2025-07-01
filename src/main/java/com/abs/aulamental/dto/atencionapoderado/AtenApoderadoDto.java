@@ -8,6 +8,8 @@ import java.sql.Date;
 
 @Valid
 public record AtenApoderadoDto(
+        @NotNull(message = "id del atenApoderado") int id,
+        @NotBlank(message = "EL nombre del paciente")  String nombre,
         @NotBlank(message = "El motivo no puede ser nulo") String motivo,
         @NotBlank(message = "El resumen no puede ser nulo") String resumen,
         @NotBlank(message = "Las conclusiones no pueden ser nulas") String conclusiones,

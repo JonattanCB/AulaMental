@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/diagnostico")
@@ -22,6 +24,11 @@ public class DiagnosticoController {
     @GetMapping("/list")
     public ResponseEntity<Page<DiagnosticoListDto>> listDiagnostico(@RequestParam(required = false) String nombre, Pageable pageable) {
         return ResponseEntity.ok(diagnosticoService.listDiagnostico(nombre, pageable));
+    }
+
+    @GetMapping("/lista")
+    public ResponseEntity<List<DiagnosticoListSelectDto>> listDiagnosticoSelec(@RequestParam(required = false) String nombre){
+        return  ResponseEntity.ok(diagnosticoService.listDiagnosticoSelect(nombre));
     }
 
     @PostMapping("/create")

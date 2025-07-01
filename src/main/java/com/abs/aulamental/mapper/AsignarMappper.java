@@ -21,11 +21,11 @@ public class AsignarMappper {
     }
 
     public static AsignarListPracticantesDto toAsignarListPracticantesDto(Asignar entity){
-        return new AsignarListPracticantesDto(entity.getId(), PersonaMapper.toConcatNombre(entity.getPracticante().getPersona()), entity.getTdocumento(),entity.getEstado() ,entity.getFechaCreacion());
+        return new AsignarListPracticantesDto(entity.getId(), PersonaMapper.toConcatNombre(entity.getPracticante().getPersona()), entity.getTdocumento(),entity.getEstado() ,entity.getFechaCreacion(),entity.getIdDocumento());
     }
 
-    public static AsignarTaskListDto toAsignarTaskList(Asignar entity){
-        return new AsignarTaskListDto(entity.getId(), PersonaMapper.toConcatNombre(entity.getPracticante().getPersona()), entity.getTdocumento(),entity.getEstado() ,entity.getFechaCreacion());
+    public static AsignarTaskListDto toAsignarTaskList(Asignar entity, String nombre){
+        return new AsignarTaskListDto(entity.getId(), nombre, entity.getTdocumento(),entity.getEstado() ,entity.getFechaCreacion(), entity.getIdDocumento(),entity.getObservaciones());
     }
 
     private AsignarMappper(){}

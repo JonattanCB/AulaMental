@@ -29,9 +29,14 @@ public class SucesoController {
     }
 
     @GetMapping("/alumnos/{id}")
-    public ResponseEntity<Page<ItemSucesoDto>> listItemSuceso( @PathVariable int id, @RequestParam(required = false) String nombre  , @RequestParam(required = false) Date fecha,
+    public ResponseEntity<Page<ItemSucesoDto>> listItemSuceso( @PathVariable int id, @RequestParam(required = false) String nombre ,
                                                               @PageableDefault(size = 10) Pageable pageable){
-        return ResponseEntity.ok(sucesoService.listItemSuceso(id, nombre,fecha,pageable));
+        return ResponseEntity.ok(sucesoService.listItemSuceso(id, nombre,pageable));
+    }
+
+    @GetMapping("/alumno/details/{id}")
+    public  ResponseEntity<SucesosAlumnoDetailsDto> getDetailSuceso( @PathVariable int id){
+        return ResponseEntity.ok(sucesoService.toDetailsSucesoAlumno(id));
     }
 
     @GetMapping("/alumno/{id}")

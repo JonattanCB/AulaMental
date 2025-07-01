@@ -1,6 +1,8 @@
 package com.abs.aulamental.mapper;
 
+import com.abs.aulamental.dto.alumno.AlumnoAtencionesDetailsDto;
 import com.abs.aulamental.dto.horario.HorarioDto;
+import com.abs.aulamental.dto.horario.HorarioUsuarioDto;
 import com.abs.aulamental.dto.rol.RolDto;
 import com.abs.aulamental.dto.user.*;
 import com.abs.aulamental.model.Persona;
@@ -28,15 +30,19 @@ public class UsuarioMapper {
                 usuario.getCorreo(),usuario.getFregistro().toString(),usuario.getEstado(),roles,horarios);
     }
 
+    public static PracticanteListDetailsDto toPracticantesDetailsDto(Usuario entity, long cantPendiente, long cantAprobados){
+        return new PracticanteListDetailsDto(entity.getId(), PersonaMapper.obtenerIniciales(entity.getPersona()), PersonaMapper.toConcatNombre(entity.getPersona()),
+                entity.getPersona().getTelefono1(),entity.getPersona().getCorreoPersonal(), cantPendiente, cantAprobados);
+    }
+
     public static UsuarioDto toDto(Usuario entity){
-        List<HorarioDto> horariosDtos = entity.getHorarios().stream().map(horario -> new HorarioDto(horario.getDia(), horario.getHora())).toList();
+        List<HorarioUsuarioDto> horariosDtos = entity.getHorarios().stream().map(horario -> new HorarioUsuarioDto(horario.getDia(), horario.getHora(), HorarioMapper.obtenerDiminutivo(horario.getDia().toString()))).toList();
         List<RolDto>  rolDtos = entity.getUsuarioRoles().stream().filter(usuarioRol -> usuarioRol.getEstado() == Estado.ACTIVO)
                 .map(usuarioRol -> RolMapper.toDto(usuarioRol.getRol())).toList();
 
-        return  new UsuarioDto(entity.getId(), entity.getPersona().getNombre(), entity.getPersona().getApaterno(),
-                entity.getPersona().getAmaterno(), entity.getPersona().getTdocumento(), entity.getPersona().getNdocumento(),
-                entity.getPersona().getTelefono1(), entity.getPersona().getTelefono2(), entity.getPersona().getCorreoPersonal(),
-                entity.getPersona().getDireccion(), rolDtos,horariosDtos);
+        return  new UsuarioDto(entity.getId(),PersonaMapper.obtenerIniciales(entity.getPersona()),entity.getPersona().getNombre(), entity.getPersona().getApaterno(),entity.getPersona().getAmaterno(),entity.getPersona().getTdocumento(),entity.getPersona().getNdocumento(),
+                entity.getPersona().getLnacimiento(),entity.getPersona().getFnacimiento(),entity.getPersona().getTelefono1(),entity.getPersona().getTelefono2(),entity.getPersona().getCorreoPersonal(),
+                entity.getPersona().getDireccion(),entity.getCorreo(),entity.getEstado(),rolDtos,horariosDtos);
     }
 
     public static UsuarioEstadoUpdateDto toUpdateEstadoDto(Usuario entity){

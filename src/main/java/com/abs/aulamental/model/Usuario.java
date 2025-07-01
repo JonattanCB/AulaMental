@@ -59,6 +59,12 @@ public class Usuario implements UserDetails {
         this.fmodificacion = Timestamp.valueOf(java.time.LocalDateTime.now());
     }
 
+    public void actualizarContrasena(String contrasena) {
+        if (contrasena != null && !contrasena.isEmpty() && !contrasena.equals(this.contrasena)) {
+            this.contrasena = contrasena;
+            this.fmodificacion = Timestamp.valueOf(java.time.LocalDateTime.now());
+        }
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

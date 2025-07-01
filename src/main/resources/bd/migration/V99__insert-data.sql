@@ -94,3 +94,40 @@ INSERT INTO apoderado (
       (24, 9, 'Técnico', 'PADRE', 'NO'),
       (25, 10, 'Secretaria', 'MADRE', 'SI');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Cabecera principal
+INSERT INTO permiso (nombre, url, label, icon, parent_id, estado, rol)
+VALUES ('UI_COMPONENTS', NULL, 'UI COMPONENTS', 'layout', 0, 'ACTIVO', 1);
+
+-- Hijos bajo UI COMPONENTS (asumimos id=1 para UI_COMPONENTS)
+INSERT INTO permiso (nombre, url, label, icon, parent_id, estado, rol)
+VALUES
+    ('FORM_LAYOUT', '/form', 'Form Layout', 'form', 1, 'ACTIVO', 1),
+    ('INPUT', '/input', 'Input', 'input', 1, 'ACTIVO', 1),
+    ('BUTTON', '/button', 'Button', 'button', 1, 'ACTIVO', 1),
+    ('TABLE', '/table', 'Table', 'table', 1, 'ACTIVO', 1),
+    ('LIST', '/list', 'List', 'list', 1, 'ACTIVO', 1),
+    ('TREE', '/tree', 'Tree', 'tree', 1, 'ACTIVO', 1),
+    ('PANEL', '/panel', 'Panel', 'panel', 1, 'ACTIVO', 1),
+    ('OVERLAY', '/overlay', 'Overlay', 'overlay', 1, 'ACTIVO', 1),
+    ('MEDIA', '/media', 'Media', 'media', 1, 'ACTIVO', 1),
+    ('MENU', '/menu', 'Menu', 'menu', 1, 'ACTIVO', 1),
+    ('MESSAGE', '/message', 'Message', 'message', 1, 'ACTIVO', 1),
+    ('FILE', '/file', 'File', 'file', 1, 'ACTIVO', 1),
+    ('CHART', '/chart', 'Chart', 'chart', 1, 'ACTIVO', 1),
+    ('TIMELINE', '/timeline', 'Timeline', 'timeline', 1, 'ACTIVO', 1),
+    ('MISC', '/misc', 'Misc', 'misc', 1, 'ACTIVO', 1);
+

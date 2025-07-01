@@ -1,5 +1,7 @@
 package com.abs.aulamental.repository;
 
+import com.abs.aulamental.model.enums.EstadoAsistencia;
+import com.abs.aulamental.model.enums.NivelGravedad;
 import com.abs.aulamental.model.itemSucesos;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +13,11 @@ import java.util.Date;
 
 @Repository
 public interface ItemSucesoRepository extends JpaRepository<itemSucesos, Integer> {
-    @Query("SELECT i from  item_sucesos  i where i.alumno.id = :alumnoId and " +
-            "(:fecha IS NULL OR i.sucesos.fecha = :fecha) and "+
-            "(:nombre IS NULL OR i.sucesos.nombre LIKE %:nombre%)")
-    Page<itemSucesos> findByIdUsuarioandOptionalFecha(int alumnoId, String nombre, Date fecha, Pageable pageable);
 
+    long countByAlumnoIdAndNivelGravedad(int userId, NivelGravedad nivel);
+
+    @Query("SELECT i from  item_sucesos  i where i.alumno.id = :alumnoId and " +
+            "(:nombre IS NULL OR LOWER(i.sucesos.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')))")
+    Page<itemSucesos> findByIdUsuarioandOptionalFecha(int alumnoId, String nombre, Pageable pageable);
 
 }

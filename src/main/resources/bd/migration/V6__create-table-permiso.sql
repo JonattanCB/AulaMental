@@ -5,7 +5,9 @@ CREATE  TABLE permiso(
     label VARCHAR(100) NOT NULL,
     icon  VARCHAR(50) NOT NULL,
     parent_id int,
+    rol int,
+    estado ENUM('ACTIVO', 'INACTIVO') DEFAULT 'ACTIVO',
     fregistro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fmodificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    estado ENUM('ACTIVO', 'INACTIVO') DEFAULT 'ACTIVO'
+    foreign key (rol) references rol(id)
 )

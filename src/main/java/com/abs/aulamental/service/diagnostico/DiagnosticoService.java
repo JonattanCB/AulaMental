@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,12 @@ public class DiagnosticoService {
                 .map(DiagnosticoMappers::toListDiagnotico);
     }
 
+    public List<DiagnosticoListSelectDto> listDiagnosticoSelect(String nombre) {
+        return  diagnosticoRepository.ListfindOpcionalbyNombre(nombre).stream().filter(diagnostico -> diagnostico.getEstado()==Estado.ACTIVO)
+                .map(DiagnosticoMappers::toListDiagnosticoSelec).toList();
+    }
+
+    @Transactional
     public DiagnosticoDetailDto createDiagnostico(DiagnosticoCreateDto dto) {
         validarComprobacion(dto.nombre());
         return DiagnosticoMappers.toDetailDiagnostico(diagnosticoRepository.save(DiagnosticoMappers.toCreateDiagnostico(dto)));
@@ -30,13 +39,15 @@ public class DiagnosticoService {
         return  DiagnosticoMappers.toDto(getEntityDiagnostico(id));
     }
 
+    @Transactional
     public DiagnosticoDetailDto updateDiagnostico(DiagnosticoUpdateDto dto) {
-        validarComprobacion(dto.nombre());
+        validarComprobacionUpdate(dto.nombre(), dto.id());
         var diagnostico = getEntityDiagnostico(dto.id());
         diagnostico.ActualizarDatos(dto);
         return  DiagnosticoMappers.toDetailDiagnostico(diagnostico);
     }
 
+    @Transactional
     public DiagnosticoDetailDto changeStatus(int id) {
         var diagnostico = getEntityDiagnostico(id);
         diagnostico.ActualizarEstado(diagnostico.getEstado() == Estado.ACTIVO ? Estado.INACTIVO : Estado.ACTIVO);
@@ -46,6 +57,12 @@ public class DiagnosticoService {
     private void validarComprobacion(String nombre){
         if (diagnosticoRepository.existsByNombre(nombre)){
             throw  new ValidarExcepciones("El nombre del diagnostico ya existe");
+        }
+    }
+
+    private void validarComprobacionUpdate(String nombre, int id ){
+        if (diagnosticoRepository.existsByNombreAndIdNot(nombre , id)){
+            throw new ValidarExcepciones("El nombre del diagnóstico ya existe");
         }
     }
 

@@ -5,7 +5,6 @@ import com.abs.aulamental.model.enums.Tipodocumentacion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.NonNull;
 
 import java.sql.Date;
 
@@ -13,8 +12,10 @@ import java.sql.Date;
 public record AsignarTaskListDto(
         @NotNull int id,
         @NotBlank String nombre,
-        @NotNull Tipodocumentacion tipodocumentacion,
+        Tipodocumentacion tipodocumentacion,
         @NotNull EstadoDocumento estadoDocumento,
-        @NonNull Date fecha
+        @NotNull Date fecha,
+        @NotNull int idDocumento,
+        String observacion
 ) {
 }
