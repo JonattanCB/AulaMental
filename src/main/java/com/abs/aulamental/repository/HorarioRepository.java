@@ -25,4 +25,25 @@ public interface HorarioRepository extends JpaRepository<Horario, Integer> {
     Optional<Horario> findByUsuarioAndDia(Usuario usuario, Dias dia);
 
     Usuario usuario(Usuario usuario);
+
+    @Query("""
+        SELECT COUNT(DISTINCT h.usuario.id)
+        FROM horario h
+        JOIN h.usuario u
+        JOIN u.usuarioRoles ur
+        WHERE h.dia = :diaActual
+          AND ur.rol.id = 2
+          AND ur.estado = 'ACTIVO'
+    """)
+    long contarUsuariosPracticantesPorDia(@Param("diaActual") Dias diaActual);
+
+    @Query("""
+            SELECT COUNT(DISTINCT h.usuario.id)
+            FROM horario h
+            WHERE h.dia = :diaActual
+        """)
+    long contarUsuariosPorDia(@Param("diaActual") Dias diaActual);
+
+
+    Dias dia(Dias dia);
 }

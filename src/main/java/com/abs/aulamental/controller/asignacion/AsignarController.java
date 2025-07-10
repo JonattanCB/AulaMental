@@ -32,8 +32,19 @@ public class AsignarController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Page<AsignarListPracticantesDto>> listAsignar(@RequestParam(required = false) String nombre, @PageableDefault(size = 10) Pageable pageable) {
-        return ResponseEntity.ok(asignarService.listAsignar(nombre,pageable));
+    public ResponseEntity<Page<AsignarListTablePracticanteDto>> listAsigPracticante(@RequestParam(required = false) String nombre, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(asignarService.listAsignarPracticantes(nombre, pageable));
+    }
+
+    @GetMapping("/list/psicologo/details/{id}")
+    public ResponseEntity<AsignarPsicologoDetailsDto> detailsDtoAsigPsicologo(@PathVariable int id){
+        return ResponseEntity.ok(asignarService.getPsicologoDetails(id));
+    }
+
+    @GetMapping("/list/task/{id}")
+    public ResponseEntity<Page<AsignarListPracticantesDto>> listAsignar(@PathVariable int id, @PageableDefault(size = 10) Pageable pageable) {
+        System.out.println(id);
+        return ResponseEntity.ok(asignarService.listAsignar(id,pageable));
     }
 
     @GetMapping("/list/practicate")

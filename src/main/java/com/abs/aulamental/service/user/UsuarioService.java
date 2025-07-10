@@ -280,9 +280,21 @@ public class UsuarioService {
             return List.of();
         }
 
-        return permisoRepository.findByRoles(idsRoles.stream().toList());
-    }
+        List<Permiso> permisos = permisoRepository.findByRoles(new ArrayList<>(idsRoles));
 
+        Map<String, Permiso> unicos = new LinkedHashMap<>();
+        for (Permiso permiso : permisos) {
+            if (permiso.getParentId() == 0) {
+                // Siempre añadimos cabeceras
+                unicos.put("HEADER-" + permiso.getId(), permiso);
+            } else if (permiso.getUrl() != null) {
+                // Eliminamos duplicados de submenús por URL
+                unicos.putIfAbsent("ITEM-" + permiso.getUrl(), permiso);
+            }
+        }
+
+        return new ArrayList<>(unicos.values());
+    }
 
     @Transactional(readOnly = true)
     public List<PermisoMenuDto> construirMenuParaUsuario(int idUsuario) {
@@ -292,12 +304,25 @@ public class UsuarioService {
             return List.of();
         }
 
-
         Map<Integer, List<Permiso>> agrupadosPorPadre = permisos.stream()
                 .collect(Collectors.groupingBy(Permiso::getParentId));
 
         List<Permiso> padres = agrupadosPorPadre.getOrDefault(0, List.of());
 
+        if (padres.isEmpty()) {
+            return permisos.stream()
+                    .filter(p -> p.getParentId() != 0)
+                    .map(p -> new PermisoMenuDto(
+                            p.getId(),
+                            p.getLabel(),
+                            p.getIcon(),
+                            p.getUrl(),
+                            null // No hijos
+                    ))
+                    .collect(Collectors.toList());
+        }
+
+        // Menú normal con cabeceras
         return padres.stream()
                 .map(padre -> toDtoConHijos(padre, agrupadosPorPadre))
                 .collect(Collectors.toList());

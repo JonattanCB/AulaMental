@@ -17,7 +17,7 @@ public interface ApoderadoRepository extends JpaRepository<Apoderado, Integer> {
             WHERE a.alumno.id = :idAlumno
             ORDER BY a.id asc
             """)
-    Apoderado searchApoderadoByAlumno(int idAlumno);
+    List<Apoderado> searchApoderadoByAlumno(int idAlumno);
 
     @Query("""
         SELECT a FROM apoderado  a WHERE

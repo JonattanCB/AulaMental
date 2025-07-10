@@ -48,14 +48,13 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.changerEstado(id));
     }
 
-
-    @PutMapping("/update/contraseña/{id}")
+    @PutMapping("/update/password/{id}")
     @Transactional
     public ResponseEntity<String> updateContraseñaUsuario(@PathVariable int id, @RequestBody @Valid UsuarioContraseñaDto dto) {
         return ResponseEntity.ok(usuarioService.updatePassword(id, dto));
     }
 
-    @GetMapping("/{id}/menu")
+    @GetMapping("/menu/{id}")
     public ResponseEntity<List<PermisoMenuDto>> obtenerMenuUsuario(@PathVariable int id) {
         return ResponseEntity.ok(usuarioService.construirMenuParaUsuario(id));
     }

@@ -1,6 +1,7 @@
 package com.abs.aulamental.service.cita;
 
 import com.abs.aulamental.dto.cita.*;
+import com.abs.aulamental.exception.ValidarExcepciones;
 import com.abs.aulamental.mapper.CitaMapper;
 import com.abs.aulamental.mapper.PersonaMapper;
 import com.abs.aulamental.model.Alumno;
@@ -35,7 +36,7 @@ public class CitaService {
     public CitaDetailsDto crearCita(CitaCreateDto dto) {
         // Validar fecha y hora
         if (dto.fecha().isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha no puede ser en el pasado");
+            throw new ValidarExcepciones("La fecha no puede ser en el pasado");
         }
 
         // Validar horario de atención
@@ -45,16 +46,14 @@ public class CitaService {
         LocalTime horarioInicio = LocalTime.of(8, 0);
         LocalTime horarioFin = LocalTime.of(18, 0);
         if (inicio.isBefore(horarioInicio) || fin.isAfter(horarioFin)) {
-            throw new IllegalArgumentException("La cita debe estar entre 08:00 y 18:00");
+            throw new ValidarExcepciones("La cita debe estar entre 08:00 y 18:00");
         }
 
         // Validar alumno
-        Alumno alumno = alumnoRepository.findById(dto.idAlumno())
-                .orElseThrow(() -> new IllegalArgumentException("Alumno no encontrado"));
+        Alumno alumno = alumnoRepository.searchAlumnosById(dto.idAlumno());
 
         // Validar psicólogo
-        Usuario psicologo = usuarioRepository.findById(dto.idPsicologo())
-                .orElseThrow(() -> new IllegalArgumentException("Psicólogo no encontrado"));
+        Usuario psicologo = usuarioRepository.searchUsuarioById(dto.idPsicologo());
 
         // Verificar traslape
         List<Cita> existentes = citaRepository.findByPsicologoIdAndFecha(dto.idPsicologo(), dto.fecha());
@@ -64,7 +63,7 @@ public class CitaService {
 
             boolean traslape = !(fin.isBefore(existenteInicio) || inicio.isAfter(existenteFin));
             if (traslape) {
-                throw new IllegalArgumentException("El psicólogo ya tiene una cita en ese horario");
+                throw new ValidarExcepciones("El psicólogo ya tiene una cita en ese horario");
             }
         }
 
@@ -98,11 +97,10 @@ public class CitaService {
 
     @Transactional
     public CitaDetailsDto actualizarEstadoCita(CitaStatusUpdateDto dto) {
-        Cita cita = citaRepository.findById(dto.id())
-                .orElseThrow(() -> new IllegalArgumentException("Cita no encontrada"));
+        Cita cita = citaRepository.searchCitaById(dto.id());
 
         if (dto.estado() == EstadoCitas.PENDIENTE) {
-            throw new IllegalArgumentException("No se puede cambiar el estado a PENDIENTE");
+            throw new ValidarExcepciones("No se puede cambiar el estado a PENDIENTE");
         }
 
         cita.ActualizarEstado(dto.estado(), dto.observaciones());

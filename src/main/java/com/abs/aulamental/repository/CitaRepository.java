@@ -61,4 +61,5 @@ public interface CitaRepository extends JpaRepository<Cita, Integer> {
 
     long countByPsicologoIdAndEstado(Integer idPsicologo, EstadoCitas estado);
 
+    Cita searchCitaById(int id);
 }

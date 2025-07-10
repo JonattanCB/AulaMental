@@ -10,8 +10,8 @@ import com.abs.aulamental.mapper.*;
 import com.abs.aulamental.model.Asignar;
 import com.abs.aulamental.model.AtencionAlumno;
 import com.abs.aulamental.model.AtencionApoderados;
-import com.abs.aulamental.model.enums.Estado;
 import com.abs.aulamental.model.enums.EstadoDocumento;
+import com.abs.aulamental.model.enums.Roles;
 import com.abs.aulamental.model.enums.Tipodocumentacion;
 import com.abs.aulamental.repository.*;
 import com.abs.aulamental.utils.DateUtil;
@@ -21,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -61,8 +60,9 @@ public class AsignarService {
         return AsignarMappper.toAsignarDetailsDto(asignacion);
     }
 
-    public Page<AsignarListPracticantesDto> listAsignar(String nombre, Pageable pageable) {
-        return asignarRepository.listAsignarOptionNombre(nombre,pageable).map(AsignarMappper::toAsignarListPracticantesDto);
+    public Page<AsignarListPracticantesDto> listAsignar(int id, Pageable pageable) {
+        System.out.println(id);
+        return asignarRepository.listAsignarOptionNombre(id,pageable).map(AsignarMappper::toAsignarListPracticantesDto);
     }
 
     public Page<AsignarTaskListDto> listAsignacionPracticantes(int id, LocalDate fecha, Pageable pageable) {
@@ -152,6 +152,29 @@ public class AsignarService {
     }
 
 
+    public Page<AsignarListTablePracticanteDto> listAsignarPracticantes(String nombre, Pageable pageable) {
+        return usuarioRepository.listUserOptionalNombre(nombre, Roles.Practicante.name(), pageable).map(usuario -> {
+            long cantPendiente = asignarRepository.contarPorEstadoYPracticante(usuario.getId(),EstadoDocumento.PENDIENTE);
+            long cantEnviada = asignarRepository.contarPorEstadoYPracticante(usuario.getId(),EstadoDocumento.ENVIADO);
+            String fecha = fechaUltimaAsignacion(usuario.getId());
+            return AsignarMappper.toAsignarListTablePracticantesDto(usuario,fecha,cantPendiente,cantEnviada);
+        });
+    }
 
+    private String fechaUltimaAsignacion(int id){
+        var date = asignarRepository.obtenerUltimaFechaAsignacion(id);
+        if (date==null){
+            return "Sin Registro";
+        }
+        return date.toString();
+    }
 
+    public AsignarPsicologoDetailsDto getPsicologoDetails(int id) {
+        long pendiente = asignarRepository.contarPorEstadoYPsicologo(id, EstadoDocumento.PENDIENTE);
+        long enviados = asignarRepository.contarPorEstadoYPsicologo(id,EstadoDocumento.ENVIADO);
+        long revicion = asignarRepository.contarPorEstadoYPsicologo(id, EstadoDocumento.REVISADO);
+        long completados = asignarRepository.contarPorEstadoYPsicologo(id, EstadoDocumento.CERRADO);
+        long total = pendiente + enviados + revicion + completados;
+        return new AsignarPsicologoDetailsDto(total, pendiente,enviados,revicion,completados);
+    }
 }

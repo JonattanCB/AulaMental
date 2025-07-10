@@ -28,9 +28,11 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
     List<Alumno> getAlumnosOptionNombretoList(String nombre);
 
     @Query("""
-           SELECT a FROM alumno a WHERE
+           SELECT a FROM alumno  a WHERE
            (:nombre IS NULL OR LOWER(CONCAT(a.persona.nombre, ' ', a.persona.apaterno, ' ', a.persona.amaterno)) LIKE CONCAT('%', LOWER(:nombre), '%'))
            """)
     Page<Alumno> getAlumnosOptionNombretoPage(String nombre, Pageable pageable);
 
+    @Query("SELECT COUNT(a) FROM alumno a")
+    long contarTotalAlumnos();
 }

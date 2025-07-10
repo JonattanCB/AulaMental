@@ -2,6 +2,7 @@ package com.abs.aulamental.model;
 
 import com.abs.aulamental.model.enums.Estado;
 import com.abs.aulamental.model.enums.Nivel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,12 +39,15 @@ public class Alumno {
     private Estado estado;
 
     @OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Apoderado> apoderados = new ArrayList<>();
 
     @OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<itemSucesos> sucesos = new ArrayList<>();
 
     @OneToMany(mappedBy = "alumno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<AtencionAlumno> atenciones = new ArrayList<>();
 
 }

@@ -1,11 +1,10 @@
 package com.abs.aulamental.mapper;
 
-import com.abs.aulamental.dto.asignar.AsignarCreateDto;
-import com.abs.aulamental.dto.asignar.AsignarDetailsDto;
-import com.abs.aulamental.dto.asignar.AsignarListPracticantesDto;
-import com.abs.aulamental.dto.asignar.AsignarTaskListDto;
+import com.abs.aulamental.dto.asignar.*;
 import com.abs.aulamental.model.Asignar;
 import com.abs.aulamental.model.Usuario;
+import com.abs.aulamental.model.enums.EstadoDocumento;
+import com.abs.aulamental.model.enums.Tipodocumentacion;
 import com.abs.aulamental.utils.DateUtil;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +20,26 @@ public class AsignarMappper {
     }
 
     public static AsignarListPracticantesDto toAsignarListPracticantesDto(Asignar entity){
-        return new AsignarListPracticantesDto(entity.getId(), PersonaMapper.toConcatNombre(entity.getPracticante().getPersona()), entity.getTdocumento(),entity.getEstado() ,entity.getFechaCreacion(),entity.getIdDocumento());
+        return new AsignarListPracticantesDto(entity.getId(), entity.getTdocumento(),entity.getEstado() ,entity.getFechaCreacion(),entity.getIdDocumento());
+    }
+
+    public static AsignarListTablePracticanteDto toAsignarListTablePracticantesDto(Usuario usuario, String fecha, Long pendiente, Long enviado){
+        return new AsignarListTablePracticanteDto(usuario.getId(), PersonaMapper.toConcatNombre(usuario.getPersona()),usuario.getPersona().getTelefono1(),fecha,pendiente, enviado);
     }
 
     public static AsignarTaskListDto toAsignarTaskList(Asignar entity, String nombre){
         return new AsignarTaskListDto(entity.getId(), nombre, entity.getTdocumento(),entity.getEstado() ,entity.getFechaCreacion(), entity.getIdDocumento(),entity.getObservaciones());
+    }
+
+    public static String titulo(Tipodocumentacion tipodocumentacion){
+        if (tipodocumentacion==Tipodocumentacion.ATENCIONALUMNO){
+            return "Atencion Alumno";
+        }
+
+        if (tipodocumentacion==Tipodocumentacion.ATENCIONAPODERADO){
+            return "Atencion Apoderado";
+        }
+        return "";
     }
 
     private AsignarMappper(){}

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Repository
@@ -55,6 +56,18 @@ public interface AtencionAlumnoRepository extends JpaRepository<AtencionAlumno, 
 
 
 
+    @Query(value = """
+        SELECT d.nombre, COUNT(a.id) AS total
+        FROM atencionalumnos a
+        JOIN diagnostico d ON a.iddiagnostico = d.id
+        JOIN asignar s ON s.id_documento = a.id
+        WHERE s.estado = 'CERRADO' 
+          AND s.tdocumento = 'ATENCIONALUMNO'
+        GROUP BY d.nombre
+        ORDER BY total DESC
+        LIMIT 5
+    """, nativeQuery = true)
+    List<Object[]> obtenerTop5DiagnosticosUsados();
 
     @Query("""
         SELECT a FROM atencionalumnos a
@@ -62,5 +75,4 @@ public interface AtencionAlumnoRepository extends JpaRepository<AtencionAlumno, 
     """)
     AtencionAlumno searchAtencionAlumnoById(int id);
 
-    Integer id(int id);
 }

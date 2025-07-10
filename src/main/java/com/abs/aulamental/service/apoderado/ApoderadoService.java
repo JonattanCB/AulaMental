@@ -16,12 +16,12 @@ public class ApoderadoService {
 
     @Transactional
     public String contact1ApoderadoAlumno(int idAlumno){
-        return apoderadoRepository.searchApoderadoByAlumno(idAlumno).getPersona().getTelefono1();
+        return apoderadoRepository.searchApoderadoByAlumno(idAlumno).get(0).getPersona().getTelefono1();
     }
 
     @Transactional
     public String contact2ApoderadoAlumno(int idAlumno){
-        return apoderadoRepository.searchApoderadoByAlumno(idAlumno).getPersona().getTelefono2();
+        return apoderadoRepository.searchApoderadoByAlumno(idAlumno).get(0).getPersona().getTelefono2();
     }
 
     public List<ApoderadoDto> getApoderadosByAlumnoId(int idAlumno) {

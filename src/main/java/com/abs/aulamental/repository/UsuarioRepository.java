@@ -42,4 +42,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
         """)
     List<Usuario> listUsuarioByPsicologoAndNombre(String nombre);
 
+    @Query("SELECT COUNT(u) FROM Usuario u ")
+    long contarUsuarios();
+
+    @Query("SELECT COUNT(u) FROM Usuario u WHERE u.estado = 'ACTIVO'")
+    long contarUsuariosActivos();
+
 }

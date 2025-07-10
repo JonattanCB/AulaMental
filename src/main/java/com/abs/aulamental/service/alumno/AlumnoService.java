@@ -5,6 +5,7 @@ import com.abs.aulamental.dto.alumno.AlumnoDto;
 import com.abs.aulamental.dto.alumno.AlumnoListDto;
 import com.abs.aulamental.dto.alumno.AlumnoSucesosListDto;
 import com.abs.aulamental.mapper.AlumnoMapper;
+import com.abs.aulamental.model.Alumno;
 import com.abs.aulamental.repository.AlumnoRepository;
 import com.abs.aulamental.service.apoderado.ApoderadoService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class AlumnoService {
     }
 
     public Page<AlumnoListDto> getAllAlumnos(String nombre, Pageable pageable){
-        return alumnoRepository.getAlumnosOptionNombretoPage(nombre, pageable).map(alumno -> {
+        Page<Alumno> alumnosPage = alumnoRepository.getAlumnosOptionNombretoPage(nombre, pageable);
+        return alumnosPage.map(alumno -> {
             String contact1 = apoderadoService.contact1ApoderadoAlumno(alumno.getId());
             return AlumnoMapper.tolistAlumno(alumno, contact1);
         });
