@@ -5,7 +5,6 @@ import com.abs.aulamental.dto.security.TokenDto;
 import com.abs.aulamental.exception.ValidarExcepciones;
 import com.abs.aulamental.mapper.PersonaMapper;
 import com.abs.aulamental.model.Usuario;
-import com.abs.aulamental.model.UsuarioRol;
 import com.abs.aulamental.model.enums.Estado;
 import com.abs.aulamental.service.security.TokenService;
 import jakarta.transaction.Transactional;

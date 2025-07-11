@@ -75,4 +75,29 @@ public interface AtencionAlumnoRepository extends JpaRepository<AtencionAlumno, 
     """)
     AtencionAlumno searchAtencionAlumnoById(int id);
 
+    @Query("""
+        SELECT a FROM atencionalumnos a
+        WHERE FUNCTION('MONTH', a.fecha) = :mes
+          AND FUNCTION('YEAR', a.fecha) = :anio
+          AND EXISTS (
+              SELECT 1 FROM asignar asig
+              WHERE asig.idDocumento = a.id
+                AND asig.tdocumento = 'ATENCIONALUMNO'
+                AND asig.estado = 'CERRADO'
+          )
+    """)
+    List<AtencionAlumno> findByMesAndAnio(@Param("mes") int mes, @Param("anio") int anio);
+
+    @Query("""
+        SELECT a FROM atencionalumnos a
+        WHERE a.alumno.id = :idAlumno
+          AND EXISTS (
+            SELECT 1 FROM asignar asig
+            WHERE asig.idDocumento = a.id
+              AND asig.tdocumento = 'ATENCIONALUMNO'
+              AND asig.estado = 'CERRADO'
+        )
+    """)
+    List<AtencionAlumno> findAtencionesAlumnosCerradasByAlumnoId(@Param("idAlumno") int idAlumno);
+
 }

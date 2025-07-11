@@ -18,6 +18,8 @@ public interface ItemSucesoRepository extends JpaRepository<itemSucesos, Integer
 
     long countByAlumnoIdAndNivelGravedad(int userId, NivelGravedad nivel);
 
+    List<itemSucesos> findByAlumnoId(int idAlumno);
+
     @Query("SELECT i from  item_sucesos  i where i.alumno.id = :alumnoId and " +
             "(:nombre IS NULL OR LOWER(i.sucesos.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')))")
     Page<itemSucesos> findByIdUsuarioandOptionalFecha(int alumnoId, String nombre, Pageable pageable);
@@ -47,4 +49,10 @@ public interface ItemSucesoRepository extends JpaRepository<itemSucesos, Integer
 """)
     long contarAlumnosUnicosEnItemSucesosDelMes();
 
+    @Query("""
+        SELECT i FROM item_sucesos i
+        WHERE i.sucesos.id = :idSuceso
+          AND i.alumno.id = :idAlumno
+    """)
+    itemSucesos findBySucesoIdAndAlumnoId(@Param("idSuceso") int idSuceso, @Param("idAlumno") int idAlumno);
 }

@@ -2,9 +2,14 @@ package com.abs.aulamental.service.user;
 
 import com.abs.aulamental.dto.horario.HorarioDto;
 import com.abs.aulamental.dto.permisos.PermisoMenuDto;
+import com.abs.aulamental.dto.security.CambioContraseniaCodeDto;
+import com.abs.aulamental.dto.security.CodeGeneradorDto;
+import com.abs.aulamental.dto.security.RespuestaCodeDto;
+import com.abs.aulamental.dto.security.validacionCodeDto;
 import com.abs.aulamental.dto.user.*;
 import com.abs.aulamental.exception.ValidarExcepciones;
 import com.abs.aulamental.mapper.HorarioMapper;
+import com.abs.aulamental.mapper.PersonaMapper;
 import com.abs.aulamental.mapper.UsuarioMapper;
 import com.abs.aulamental.model.Permiso;
 import com.abs.aulamental.model.Rol;
@@ -16,14 +21,20 @@ import com.abs.aulamental.repository.*;
 import com.abs.aulamental.service.horario.HorarioService;
 import com.abs.aulamental.service.rol.RolService;
 import com.abs.aulamental.utils.DateUtil;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +51,7 @@ public class UsuarioService {
     private final RolService rolService;
     private final HorarioService horarioService;
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
 
     public Page<UsuarioListDto> listUser(int idcreador, String nombre,  Pageable pageable) {
         Page<Usuario> usuarios;
@@ -252,7 +264,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public String updatePassword(int id, @Valid UsuarioContraseñaDto dto) {
+    public String updatePassword(int id, @NotNull @Valid UsuarioContraseñaDto dto) {
         Usuario usuario = usuarioRepository.searchUsuarioById(id);
 
         if (!passwordEncoder.matches(dto.contraseñaActual(), usuario.getContrasena())) {
@@ -344,4 +356,99 @@ public class UsuarioService {
         );
     }
 
+    @Transactional
+    public CodeGeneradorDto generedorCode(String correo) {
+        if (!usuarioRepository.existsByCorreo(correo)){
+            throw new ValidarExcepciones("El correo no existe en el sistema");
+        }
+
+        Usuario usuario = usuarioRepository.findByCorreo(correo);
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder codigo = new StringBuilder();
+
+        for (int i = 0; i < 6; i++) {
+            int index = (int) (Math.random() * caracteres.length());
+            codigo.append(caracteres.charAt(index));
+        }
+
+        try{
+            String nombre = PersonaMapper.toConcatNombre(usuario.getPersona());
+            String contenidoHtml = """
+                <div style="font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                    <h2 style="color: #2c3e50;">¡Hola, %s!</h2>
+                    <p>Tu código de verificación es:</p>
+                    <div style="font-size: 28px; font-weight: bold; color: #2980b9; margin: 20px 0;">%s</div>
+                    <p>Por favor, usa este código para continuar con tu proceso.</p>
+                    <p style="color: #7f8c8d;">Este código expirará en los próximos minutos.</p>
+                    <br>
+                    <small style="color: #bdc3c7;">No compartas este código con nadie.</small>
+                </div>
+            """.formatted(nombre, codigo.toString());
+
+            MimeMessage mensaje = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mensaje, true, "UTF-8");
+            helper.setTo(usuario.getPersona().getCorreoPersonal());
+            helper.setSubject("Código de Verificación");
+            helper.setText(contenidoHtml, true);
+            helper.setFrom("sebastiancb233@gmail.com");
+            mailSender.send(mensaje);
+
+            usuario.actualizarcodigoExpiracion(LocalDateTime.now().plusMinutes(10), codigo.toString());
+
+        }catch (Exception e){
+            throw new ValidarExcepciones("Error al mandar el codigo");
+        }
+        return new CodeGeneradorDto(codigo.toString());
+    }
+
+    @Transactional
+    public RespuestaCodeDto validacionCode(validacionCodeDto dto) {
+        Usuario usuario = usuarioRepository.findByCorreo(dto.correo());
+        if (usuario == null) {
+            throw new ValidarExcepciones("Correo no existe.");
+        }
+
+        if (usuario.getCodigoverificacion() == null || usuario.getCodigoexpiracion() == null) {
+            throw new ValidarExcepciones("No se ha generado un código.");
+        }
+
+        if (LocalDateTime.now().isAfter(usuario.getCodigoexpiracion())) {
+            throw new ValidarExcepciones("El código ha expirado.");
+        }
+
+        if (!usuario.getCodigoverificacion().equalsIgnoreCase(dto.code())) {
+            throw new ValidarExcepciones("El código no es válido.");
+        }
+
+        return new RespuestaCodeDto("Codigo Valido");
+    }
+
+    @Transactional
+    public RespuestaCodeDto changerPasswordCode(CambioContraseniaCodeDto dto) {
+        if (!dto.nuevaContrasena().equals(dto.repetirContrasena())) {
+            throw new ValidarExcepciones("Las contraseñas no coinciden.");
+        }
+
+        Usuario usuario = usuarioRepository.findByCorreo(dto.correo());
+        if (usuario == null) {
+            throw new ValidarExcepciones("Correo no existe.");
+        }
+
+        if (usuario.getCodigoverificacion() == null || usuario.getCodigoexpiracion() == null) {
+            throw new ValidarExcepciones("No se ha generado un código.");
+        }
+
+        if (LocalDateTime.now().isAfter(usuario.getCodigoexpiracion())) {
+            throw new ValidarExcepciones("El código ha expirado.");
+        }
+
+        if (!usuario.getCodigoverificacion().equalsIgnoreCase(dto.codigo())) {
+            throw new ValidarExcepciones("El código no es válido.");
+        }
+
+        usuario.actualizarContrasena(passwordEncoder.encode(dto.nuevaContrasena()));
+        usuario.actualizarcodigoExpiracion(null, null);
+
+        return new RespuestaCodeDto("Contraseña actualizada correctamente.");
+    }
 }

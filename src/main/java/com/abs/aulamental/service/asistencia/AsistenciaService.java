@@ -9,7 +9,6 @@ import com.abs.aulamental.mapper.AsistenciaMapper;
 import com.abs.aulamental.mapper.PersonaMapper;
 import com.abs.aulamental.model.Asistencia;
 import com.abs.aulamental.model.Horario;
-import com.abs.aulamental.model.Persona;
 import com.abs.aulamental.model.Usuario;
 import com.abs.aulamental.model.enums.Dias;
 import com.abs.aulamental.model.enums.EstadoAsistencia;

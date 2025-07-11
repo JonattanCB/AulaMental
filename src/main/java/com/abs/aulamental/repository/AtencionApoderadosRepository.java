@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface AtencionApoderadosRepository extends JpaRepository<AtencionApoderados, Integer> {
@@ -46,6 +47,19 @@ public interface AtencionApoderadosRepository extends JpaRepository<AtencionApod
     """)
     java.sql.Date obtenerUltimaFechaPorApoderadoCerrada(@Param("idApoderado") int idApoderado);
 
-
     AtencionApoderados searchAtencionApoderadosById(int idaap);
+
+    @Query("""
+    SELECT ap FROM atencion_apoderados ap
+    WHERE FUNCTION('MONTH', ap.fecha) = :mes
+      AND FUNCTION('YEAR', ap.fecha) = :anio
+      AND EXISTS (
+          SELECT 1 FROM asignar a
+          WHERE a.idDocumento = ap.id
+            AND a.tdocumento = 'ATENCIONAPODERADO'
+            AND a.estado = 'CERRADO'
+      )
+""")
+    List<AtencionApoderados> findByMesYAnio(@Param("mes") int mes, @Param("anio") int anio);
+
 }

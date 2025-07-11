@@ -26,4 +26,22 @@ public class DateUtil {
         return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
 
+    public static String obtenerNombreMes(int mes) {
+        return switch (mes) {
+            case 1 -> "Enero";
+            case 2 -> "Febrero";
+            case 3 -> "Marzo";
+            case 4 -> "Abril";
+            case 5 -> "Mayo";
+            case 6 -> "Junio";
+            case 7 -> "Julio";
+            case 8 -> "Agosto";
+            case 9 -> "Septiembre";
+            case 10 -> "Octubre";
+            case 11 -> "Noviembre";
+            case 12 -> "Diciembre";
+            default -> "Mes inválido";
+        };
+    }
+
 }

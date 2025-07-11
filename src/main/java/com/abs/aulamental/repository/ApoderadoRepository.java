@@ -34,4 +34,6 @@ public interface ApoderadoRepository extends JpaRepository<Apoderado, Integer> {
     Apoderado searchApoderadoById(int id);
 
     List<Apoderado> searchApoderadoByAlumno_Id(int alumnoId);
+
+    List<Apoderado> findByAlumnoId(int alumnoId);
 }

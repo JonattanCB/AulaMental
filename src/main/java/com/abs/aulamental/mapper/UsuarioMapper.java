@@ -1,7 +1,5 @@
 package com.abs.aulamental.mapper;
 
-import com.abs.aulamental.dto.alumno.AlumnoAtencionesDetailsDto;
-import com.abs.aulamental.dto.horario.HorarioDto;
 import com.abs.aulamental.dto.horario.HorarioUsuarioDto;
 import com.abs.aulamental.dto.rol.RolDto;
 import com.abs.aulamental.dto.user.*;
@@ -22,7 +20,7 @@ public class UsuarioMapper {
                 dto.correopersonal(),dto.direccion(),dto.lnacimiento(),dto.fnacimiento(),
                 DateUtil.nowTimestamp(), DateUtil.nowTimestamp(), Estado.ACTIVO);
 
-        return new Usuario(0, persona, dto.correo(), dto.contrasenia(), Estado.ACTIVO, DateUtil.nowTimestamp(), DateUtil.nowTimestamp(),null,null,null, null);
+        return new Usuario(0, persona, dto.correo(), dto.contrasenia(), Estado.ACTIVO, DateUtil.nowTimestamp(), DateUtil.nowTimestamp(),"",null,null,null,null, null);
     }
 
     public static UsuarioDetailDto toDetailDto(Usuario usuario, List<String> roles, List<String> horarios){

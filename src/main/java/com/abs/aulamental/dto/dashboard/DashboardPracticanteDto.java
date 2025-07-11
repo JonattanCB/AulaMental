@@ -9,6 +9,7 @@ public record DashboardPracticanteDto(
         Long cerrados,
         Long revisados,
         Long enviados,
+        Long total,
         List<TareasDasrboardPracticanteDto> tareas
 ) {
 }

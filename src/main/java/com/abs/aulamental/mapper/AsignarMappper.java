@@ -3,7 +3,6 @@ package com.abs.aulamental.mapper;
 import com.abs.aulamental.dto.asignar.*;
 import com.abs.aulamental.model.Asignar;
 import com.abs.aulamental.model.Usuario;
-import com.abs.aulamental.model.enums.EstadoDocumento;
 import com.abs.aulamental.model.enums.Tipodocumentacion;
 import com.abs.aulamental.utils.DateUtil;
 import org.springframework.stereotype.Component;

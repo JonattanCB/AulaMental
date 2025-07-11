@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +40,12 @@ public class Usuario implements UserDetails {
 
     private Timestamp fmodificacion;
 
+    @Column(name = "codigo_verificacion")
+    private String codigoverificacion;
+
+    @Column(name = "codigo_expiracion")
+    private LocalDateTime codigoexpiracion;
+
     @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<UsuarioRol> usuarioRoles;
 
@@ -64,6 +71,11 @@ public class Usuario implements UserDetails {
             this.contrasena = contrasena;
             this.fmodificacion = Timestamp.valueOf(java.time.LocalDateTime.now());
         }
+    }
+
+    public void actualizarcodigoExpiracion(LocalDateTime codigoExpiracion, String codigoverificacion) {
+        this.codigoverificacion = codigoverificacion;
+        this.codigoexpiracion = codigoExpiracion;
     }
 
     @Override

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FC_ATENCION_PADRES" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3096ead9-d416-4ded-8d73-2b6ad1016032">
+	<property name="ireport.zoom" value="1.1000000000000025"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Logo_Izq" class="java.io.InputStream"/>
+	<parameter name="Logo_Der" class="java.io.InputStream"/>
+	<field name="numero" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="motivo_consulta" class="java.lang.String"/>
+	<field name="resumen_entrevista" class="java.lang.String"/>
+	<field name="conclusiones" class="java.lang.String"/>
+	<field name="recomendaciones" class="java.lang.String"/>
+	<field name="herramientas" class="java.lang.String"/>
+	<field name="diag_presunt" class="java.lang.String"/>
+	<field name="comentario_adicional" class="java.lang.String"/>
+	<group name="Ficha" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{numero}]]></groupExpression>
+		<groupHeader>
+			<band height="709" splitType="Immediate">
+				<staticText>
+					<reportElement x="155" y="0" width="247" height="36" uuid="3e2edfaf-6816-4f98-bc0b-63e240c8df09"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[SEGUIMIENTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="36" y="36" width="30" height="15" uuid="544b1862-7a9e-4750-a848-94131c7fb21f"/>
+					<text><![CDATA[N°:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="52" y="36" width="60" height="15" uuid="e5663ffb-c544-461a-8e71-e28e266e88ed"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="405" y="36" width="40" height="15" uuid="dcaf91ad-c053-41c8-ae77-d38321f9d891"/>
+					<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="437" y="36" width="74" height="15" uuid="86d040a9-5f36-45a0-9a85-4766b480d461"/>
+					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="36" y="361" width="472" height="17" uuid="448d2df3-e3cd-4173-8def-968dfbf064f6"/>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA[$F{diag_presunt}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="36" y="116" width="200" height="15" uuid="0c80d856-5014-456f-8178-16347419216b"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[RESUMEN DE LA ENTREVISTA.]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="36" y="196" width="474" height="19" uuid="a1050737-384b-4582-8ba9-15982933b865"/>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA[$F{conclusiones}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="36" y="417" width="472" height="19" isPrintWhenDetailOverflows="true" uuid="14e74601-898a-4cc8-9a47-f178ab8eba67"/>
+					<textElement textAlignment="Justified" markup="none">
+						<font isUnderline="false" isStrikeThrough="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{comentario_adicional}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="36" y="251" width="474" height="17" uuid="021f94ec-cbcc-4122-b891-9e3d22a66ce4"/>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA[$F{recomendaciones}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="36" y="226" width="200" height="15" uuid="10e9f49b-042a-4c2d-aa32-d39cde3b6161"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[RECOMENDACIONES.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="36" y="62" width="200" height="15" uuid="2eccf11c-ad5e-4f9a-829c-bf67627e2452"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[MOTIVO DE CONSULTA.]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="36" y="136" width="474" height="23" uuid="b66a795d-fb92-4290-99d0-afb122d2550e"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA[$F{resumen_entrevista}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="36" y="392" width="199" height="15" uuid="fbd6252a-50b1-45ef-84b0-2a2dc558baa7"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[COMENTARIO ADICIONAL.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="35" y="336" width="201" height="15" uuid="e63a2197-76d6-4318-b5c3-cd7aca22ce6f"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[DIAGNOSTICO PRESUNTIVO]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="36" y="83" width="475" height="21" uuid="7a12b5d7-f1df-4279-ad65-58f76bde9fc0"/>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA[$F{motivo_consulta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="35" y="307" width="474" height="18" uuid="2d44c609-2078-4051-93f4-ea2f2a7d29d7"/>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA[$F{herramientas}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="36" y="170" width="200" height="15" uuid="43093da9-5841-4cc9-8ae2-469e50843a28"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[CONCLUSIONES.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="36" y="279" width="215" height="15" uuid="1355b5a2-8350-4201-a5bd-a9c546c51b85"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[TÉCNICAS O HERRAMIENTAS UTILIZADAS.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="331" y="493" width="180" height="15" uuid="0de69c21-759a-4408-9952-0bad4a660613"/>
+					<box>
+						<topPen lineWidth="2.0"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Lic. Angel Gordillo Carpio]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="331" y="508" width="180" height="15" uuid="096a45ba-2bf3-4842-8b9b-5211604f07a2"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PSICÓLOGO]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<pageHeader>
+		<band height="93" splitType="Stretch">
+			<image scaleImage="RetainShape">
+				<reportElement x="28" y="0" width="207" height="93" uuid="14ddaa36-3335-4c35-bb5d-34a401ff9f15"/>
+				<imageExpression><![CDATA[$P{Logo_Izq}]]></imageExpression>
+			</image>
+			<image scaleImage="RetainShape">
+				<reportElement x="425" y="0" width="86" height="49" uuid="8a24ad81-5d63-4c60-b1e4-85ecdca3fe90"/>
+				<imageExpression><![CDATA[$P{Logo_Der}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+</jasperReport>

@@ -29,9 +29,18 @@ public interface AsignarRepository extends JpaRepository<Asignar, Integer> {
     Page<Asignar> listAsignarOptionNombre(int id, Pageable pageable);
 
     @Query("""
-       SELECT a FROM asignar a WHERE a.Practicante.id = :id AND
-       (:fecha IS NULL OR a.FechaCreacion = :fecha)
-       """)
+    SELECT a FROM asignar a 
+    WHERE a.Practicante.id = :id 
+      AND (:fecha IS NULL OR a.FechaCreacion = :fecha)
+    ORDER BY 
+      CASE a.estado
+        WHEN 'PENDIENTE' THEN 1
+        WHEN 'REVISADO' THEN 2
+        WHEN 'ENVIADO' THEN 3
+        WHEN 'CERRADO' THEN 4
+        ELSE 5
+      END
+    """)
     Page<Asignar> listAsignarPracticanteOptionFecha(int id, LocalDate fecha, Pageable pageable);
 
     @Query("""

@@ -6,5 +6,7 @@ CREATE TABLE usuario (
     estado ENUM('ACTIVO', 'INACTIVO') DEFAULT 'ACTIVO',
     fregistro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fmodificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    codigo_verificacion VARCHAR(10),
+    codigo_expiracion DATETIME,
     foreign key (idpersona) references persona(id)
 );

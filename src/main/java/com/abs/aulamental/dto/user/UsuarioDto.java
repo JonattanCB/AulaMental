@@ -1,6 +1,5 @@
 package com.abs.aulamental.dto.user;
 
-import com.abs.aulamental.dto.horario.HorarioDto;
 import com.abs.aulamental.dto.horario.HorarioUsuarioDto;
 import com.abs.aulamental.dto.rol.RolDto;
 import com.abs.aulamental.model.enums.Estado;
@@ -9,7 +8,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.sql.Date;
 import java.util.List;
 
 @Valid

@@ -41,9 +41,12 @@ public class SecurityConfiguration {
                         // Endpoints públicos
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/password/**").permitAll()
                         // EndPoint Menu
                         .requestMatchers("/api/usuario/menu/**").authenticated()
                         .requestMatchers("/api/dashboard/**").authenticated()
+                        // Endpoints CITA
+                        .requestMatchers("/api/cita/**").authenticated()
                         // Endpoints Usuario
                         .requestMatchers("/api/usuario/**").hasAnyAuthority("ROLE_Directora", "ROLE_Psicologia")
                         // Endpoints Rol
@@ -66,8 +69,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/persona/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Directora")
                         // Endpoints Alumno
                         .requestMatchers("/api/alumno/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Directora","ROLE_Bienestar")
-                        // Endpoints CITA
-                        .requestMatchers("/api/cita/**").authenticated()
+                        // Endpoints Exportar
+                        .requestMatchers("/api/exportar/**").hasAnyAuthority("ROLE_Psicologia","ROLE_Directora","ROLE_Bienestar")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

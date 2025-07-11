@@ -68,6 +68,7 @@ public class DashboardService {
         Long cerrados = asignarRepository.contarPorEstadoYPracticante(id,EstadoDocumento.CERRADO);
         Long revisados = asignarRepository.contarPorEstadoYPracticante(id,EstadoDocumento.REVISADO);
         Long enviados = asignarRepository.contarPorEstadoYPracticante(id,EstadoDocumento.ENVIADO);
+        long total = perdientes + enviados + revisados + enviados;
         List<TareasDasrboardPracticanteDto> tareas = asignarRepository.listarPorEstadosYPracticante(id, EstadoDocumento.PENDIENTE,EstadoDocumento.REVISADO).stream().map(
                 asignar -> {
                     String titulo = "Informe de " + AsignarMappper.titulo(asignar.getTdocumento());
@@ -75,7 +76,7 @@ public class DashboardService {
                 }
         ).toList();
 
-        return new DashboardPracticanteDto(perdientes,cerrados,revisados,enviados,tareas);
+        return new DashboardPracticanteDto(perdientes,cerrados,revisados,enviados,total,tareas);
     }
 
     public DashboardDirectoraDto getDasboardDirectora(int id) {

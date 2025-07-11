@@ -1,7 +1,6 @@
 package com.abs.aulamental.controller.diagnostico;
 
 import com.abs.aulamental.dto.diagnostico.*;
-import com.abs.aulamental.model.Diagnostico;
 import com.abs.aulamental.service.diagnostico.DiagnosticoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
