@@ -56,6 +56,7 @@ public interface AsignarRepository extends JpaRepository<Asignar, Integer> {
             SELECT COUNT(a)
             FROM asignar a
             WHERE a.Usuario.id = :idPsicologo
+            AND a.Practicante.id != :idPsicologo
             AND a.estado = :estado
         """)
     long contarPorEstadoYPsicologo(@Param("idPsicologo") int idPsicologo,
