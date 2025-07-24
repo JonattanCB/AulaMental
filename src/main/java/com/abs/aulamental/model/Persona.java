@@ -69,6 +69,25 @@ public class Persona {
         this.fmodificacion = Timestamp.valueOf(java.time.LocalDateTime.now());
     }
 
+    public void updatePersonaData(String telef1, String telef2, String correoP,String direccion){
+        if( telef1 != null && !telef1.isEmpty() && !telef1.equals(this.telefono1)){
+            this.telefono1 = telef1;
+        }
+
+        if ( telef2 != null && !telef2.isEmpty() && !telef2.equals(this.telefono2)){
+            this.telefono2 = telef2;
+        }
+
+        if ( correoP != null && !correoP.isEmpty() && !correoP.equals(this.correoPersonal)){
+            this.correoPersonal = correoP;
+        }
+
+        if (direccion != null && !direccion.isEmpty() && !direccion.equals(this.direccion)){
+            this.direccion = direccion;
+        }
+        this.fmodificacion = Timestamp.valueOf(java.time.LocalDateTime.now());
+    }
+
     public void actualizarEstado(Estado estado){
         if (estado != null && !estado.equals(this.estado)){
             this.estado = estado;

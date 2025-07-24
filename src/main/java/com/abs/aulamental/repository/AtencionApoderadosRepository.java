@@ -16,14 +16,14 @@ public interface AtencionApoderadosRepository extends JpaRepository<AtencionApod
     AtencionApoderados getAtencionApoderadosById(Integer id);
 
     @Query("""
-            SELECT aa FROM atencion_apoderados aa
-            JOIN asignar asg ON asg.idDocumento = aa.id
-            WHERE asg.tdocumento = 'ATENCIONAPODERADO'
-                AND aa.apoderado.id = :id
-                AND (:fecha IS NULL OR aa.fecha >= :fecha)
-            AND asg.estado = 'CERRADO'
-            """)
-    Page<AtencionApoderados> listAtencionApoderadoOptionalDate(int id, LocalDate fecha, Pageable pageable);
+        SELECT aa FROM atencion_apoderados aa
+        JOIN asignar asg ON asg.idDocumento = aa.id
+        WHERE asg.tdocumento = 'ATENCIONAPODERADO'
+          AND aa.apoderado.persona.id = :personaId
+          AND (:fecha IS NULL OR aa.fecha >= :fecha)
+          AND asg.estado = 'CERRADO'
+    """)
+    Page<AtencionApoderados> listAtencionApoderadoOptionalDate(int id, int personaId, LocalDate fecha, Pageable pageable);
 
 
     @Query("""

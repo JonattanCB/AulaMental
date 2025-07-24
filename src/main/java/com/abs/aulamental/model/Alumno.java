@@ -50,4 +50,13 @@ public class Alumno {
     @JsonIgnore
     private List<AtencionAlumno> atenciones = new ArrayList<>();
 
+    public void ActualizarNivelGrado(int grado, Nivel nivel){
+        this.nivel = nivel;
+        this.grado = grado;
+    }
+
+    public void ActualizarEstado(Estado estado){
+        this.estado = estado;
+    }
+
 }

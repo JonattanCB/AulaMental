@@ -9,4 +9,5 @@ public interface PersonasRepository extends JpaRepository<Persona, Integer> {
 
     boolean existsPersonaByNdocumento(String ndocumento);
 
+    Persona findByNdocumento(String ndocumento);
 }

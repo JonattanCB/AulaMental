@@ -4,8 +4,11 @@ import com.abs.aulamental.dto.Apoderado.ApoderadoDto;
 import com.abs.aulamental.dto.alumno.AlumnoDto;
 import com.abs.aulamental.dto.alumno.AlumnoListDto;
 import com.abs.aulamental.dto.alumno.AlumnoSucesosListDto;
+import com.abs.aulamental.dto.alumno.CreateAlumnoDto;
 import com.abs.aulamental.dto.suceso.SucesoAlumnoListDto;
 import com.abs.aulamental.model.Alumno;
+import com.abs.aulamental.model.Persona;
+import com.abs.aulamental.model.enums.Estado;
 import com.abs.aulamental.utils.DateUtil;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +21,14 @@ import java.util.stream.Stream;
 @Component
 public class AlumnoMapper {
 
+    public static Alumno tocreateDto(CreateAlumnoDto dto){
+        var persona = new Persona(0,dto.nombre(),dto.apaterno(),dto.amaterno(),
+                dto.tdocumento(),dto.ndocumento(),dto.telefono1(),dto.telefono2(),
+                dto.correopersonal(),dto.direccion(),dto.lnacimiento(),dto.fnacimiento(),
+                DateUtil.nowTimestamp(), DateUtil.nowTimestamp(), Estado.ACTIVO);
+        return new Alumno(0,persona,dto.nivel(),dto.grado(),DateUtil.nowTimestamp(), DateUtil.nowTimestamp(),Estado.ACTIVO,null,null, null);
+    }
+
     public static SucesoAlumnoListDto tolistSucesoAlumno(Alumno alumno, String contact1, String contact2){
         return new SucesoAlumnoListDto(alumno.getId(), PersonaMapper.toConcatNombre(alumno.getPersona()),toConcatNivelAlumno(alumno), contact1,contact2);
     }
@@ -25,7 +36,7 @@ public class AlumnoMapper {
     public  static AlumnoDto toDto(Alumno alumno, List<ApoderadoDto> apoderadoDtos){
         int edad = DateUtil.calculateAge(LocalDate.parse(alumno.getPersona().getFnacimiento()));
         return  new AlumnoDto(alumno.getId(), PersonaMapper.toConcatNombre(alumno.getPersona()), toConcatNivelAlumno(alumno),
-                edad, alumno.getPersona().getTelefono1(), alumno.getPersona().getDireccion(), apoderadoDtos);
+                edad, alumno.getPersona().getTelefono1(), alumno.getPersona().getDireccion(), alumno.getGrado(), alumno.getNivel(), apoderadoDtos);
     }
 
     public static AlumnoSucesosListDto tolistAlumnoitemSuceso(Alumno alumno){

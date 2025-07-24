@@ -56,7 +56,8 @@ public class AtencionApoderadoService {
     }
 
     public Page<AtenApoderadoListDetailDto> listAtenAPoderadoDetails(int id, LocalDate fecha, Pageable pageable) {
-        return atencionApoderadosRepository.listAtencionApoderadoOptionalDate(id, fecha, pageable).map(AtencionApoderadoMapper::toListAtenApoderadoDetail);
+        var apoderado = apoderadoRepository.searchApoderadoById(id);
+        return atencionApoderadosRepository.listAtencionApoderadoOptionalDate(id, apoderado.getPersona().getId(), fecha, pageable).map(AtencionApoderadoMapper::toListAtenApoderadoDetail);
     }
 
     @Transactional

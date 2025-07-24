@@ -1,11 +1,10 @@
 
-INSERT INTO rol(nombre, descripcion, fregistro, fmodificacion, estado)
+INSERT INTO rol(id,nombre, descripcion, fregistro, fmodificacion, estado)
 VALUES
-    ('Psicologia', 'Rol para los psicologos', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
-    ('Practicante', 'Rol para los practicas de psicologia', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
-    ('Directora', 'Rol para los directores de la institucion', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
-    ('Bienestar', 'Rol para los bienestar de la institucion', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
-    ('Estudiante', 'Rol para los estudiantes de la institucion', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO');
+    (1,'Psicologia', 'Rol para los psicologos', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
+    (2,'Practicante', 'Rol para los practicas de psicologia', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
+    (3,'Directora', 'Rol para los directores de la institucion', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
+    (4,'Bienestar', 'Rol para los bienestar de la institucion', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO');
 
 
 -- Insertar datos de ejemplo en las tablas Usuario
@@ -14,24 +13,19 @@ VALUES
     (26, 'Carlos', 'Vargas', 'López', 'DNI', '30111222', '902000001', '902000002', 'carlosv@ejemplo.com', 'Av. Andes 101', 'Lima', '1988-06-01', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
     (27, 'Lucía', 'Fernández', 'Díaz', 'DNI', '30111223', '902000003', '902000004', 'luciaf@ejemplo.com', 'Av. Viento 202', 'Lima', '1991-08-15', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
     (28, 'Raúl', 'Gómez', 'Pérez', 'DNI', '30111224', '902000005', NULL, 'raulg@ejemplo.com', 'Av. Mar 303', 'Arequipa', '1995-03-10', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
-    (29, 'Sandra', 'Mora', 'Salas', 'DNI', '30111225', '902000006', NULL, 'sandram@ejemplo.com', 'Av. Sol 404', 'Cusco', '1987-11-25', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),
-    (30, 'Hugo', 'Torres', 'Romero', 'DNI', '30111226', '902000007', NULL, 'hugot@ejemplo.com', 'Av. Luna 505', 'Trujillo', '1992-12-20', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO');
-
+    (29, 'Sandra', 'Mora', 'Salas', 'DNI', '30111225', '902000006', NULL, 'sandram@ejemplo.com', 'Av. Sol 404', 'Cusco', '1987-11-25', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO');
 
 INSERT INTO usuario(idpersona, correo, contrasena, estado, fregistro, fmodificacion)
 VALUES
     (26, 'carlos@empresa.com', '$2a$12$25xD4hVc4VzndoN7we0xxu32XLyluQEn.8J/ndvZgdzwANN40ALJW', 'ACTIVO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (27, 'lucia@empresa.com', '$2a$12$25xD4hVc4VzndoN7we0xxu32XLyluQEn.8J/ndvZgdzwANN40ALJW', 'ACTIVO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (28, 'raul@empresa.com', '$2a$12$25xD4hVc4VzndoN7we0xxu32XLyluQEn.8J/ndvZgdzwANN40ALJW', 'ACTIVO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (29, 'sandra@empresa.com', '$2a$12$25xD4hVc4VzndoN7we0xxu32XLyluQEn.8J/ndvZgdzwANN40ALJW', 'ACTIVO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (30, 'hugo@empresa.com', '$2a$12$25xD4hVc4VzndoN7we0xxu32XLyluQEn.8J/ndvZgdzwANN40ALJW', 'ACTIVO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
+    (29, 'sandra@empresa.com', '$2a$12$25xD4hVc4VzndoN7we0xxu32XLyluQEn.8J/ndvZgdzwANN40ALJW', 'ACTIVO', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 INSERT INTO usuario_rol(id_usuario, id_rol, fregistro, fmodificacion, estado)
 VALUES
     (4, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),  -- Bienestar
-    (5, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),  -- Estudiante
     (1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),  -- Psicología
     (2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO'),  -- Practicante
     (3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVO');  -- Directora
@@ -40,11 +34,13 @@ VALUES
 
 INSERT INTO horario(idusuario, dia, horaingreso, fregistro, fmodificacion)
 VALUES
+    (1, 'LUNES', '09:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'LUNES', '09:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'LUNES', '09:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'LUNES', '09:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 'MIERCOLES', '09:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (4, 'VIERNES', '09:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (5, 'MARTES', '10:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (5, 'JUEVES', '10:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (4, 'VIERNES', '09:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 -- Asignar Alumnos a los usuarios
 
 
@@ -115,7 +111,3 @@ INSERT INTO permiso (nombre, url, label, icon, parent_id, estado, rol) VALUES
 INSERT INTO permiso (nombre, url, label, icon, parent_id, estado, rol) VALUES
     ('Alumnos', '/alumnos', 'Gestión Alumnos', 'bi bi-people', 99, 'ACTIVO', 4),
     ('Sucesos', '/suceso', 'Gestión Sucesos', 'bi bi-journals',4 , 'ACTIVO', 4);
-
--- Estudiante (Rol ID 5)
-INSERT INTO permiso (nombre, url, label, icon, parent_id, estado, rol) VALUES
-    ('Citas', '/cita', 'Citas', 'bi bi-calendar2', 0, 'ACTIVO', 5);

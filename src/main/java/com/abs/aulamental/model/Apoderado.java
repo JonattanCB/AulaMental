@@ -44,4 +44,12 @@ public class Apoderado {
     @Enumerated(EnumType.STRING)
     private SiNo convive;
 
+    public  void actualizarData(String ocupacion){
+        this.ocupacion = ocupacion;
+    }
+
+    public void actualizaestado(Estado estado){
+        this.estado = estado;
+    }
+
 }

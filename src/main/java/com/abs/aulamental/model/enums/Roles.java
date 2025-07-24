@@ -4,6 +4,5 @@ public enum Roles {
     Psicologia,
     Practicante,
     Directora,
-    Bienestar,
-    Estudiante
+    Bienestar
     }

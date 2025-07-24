@@ -61,6 +61,20 @@ public final class ApiGsonUtils {
         return GSON.fromJson(json, type);
     }
 
+    public static <B, R> HttpResponse<String> postRaw(String url, String bearerToken,
+                                                      B body) throws IOException, InterruptedException {
+
+        String jsonBody = GSON.toJson(body);
+
+        HttpRequest.Builder builder = base(url)
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .header("Content-Type", "application/json");
+        addBearer(builder, bearerToken);
+
+        HttpRequest request = builder.build();
+        return HTTP.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
     private static HttpRequest.Builder base(String url) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))

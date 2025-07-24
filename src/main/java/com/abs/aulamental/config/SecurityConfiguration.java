@@ -23,7 +23,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SecurityConfiguration {
 
-    //Test
     private  final SecurityFilter securityFilter;
 
     @Autowired
@@ -40,11 +39,13 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        //.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/password/**").permitAll()
                         // EndPoint Menu
                         .requestMatchers("/api/usuario/menu/**").authenticated()
                         .requestMatchers("/api/dashboard/**").authenticated()
+                        // Endpoints Mensajeria
+                        .requestMatchers("/api/mensajeria/**").authenticated()
                         // Endpoints CITA
                         .requestMatchers("/api/cita/**").authenticated()
                         // Endpoints Usuario
